@@ -118,10 +118,10 @@ jobs:
       
       - name: Setup Latest YouTube Headers
         run: |
-          # Remove the existing folder if the Theos setup created an empty one
-          rm -rf $THEOS/include/YouTubeHeader
-          # Clone PoomSmart's latest headers directly into the global Theos include path
-          git clone https://github.com/PoomSmart/YouTubeHeader.git $THEOS/include/YouTubeHeader
+          # Use the absolute path to where Theos usually installs on GitHub Actions
+          THEOS_PATH=~/theos 
+          rm -rf $THEOS_PATH/include/YouTubeHeader
+          git clone https://github.com/PoomSmart/YouTubeHeader.git $THEOS_PATH/include/YouTubeHeader
 
       - name: Hash YT ipa url
         run: |
