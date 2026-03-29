@@ -114,15 +114,7 @@ jobs:
           ./theos-jailed/install
         env:
           THEOS: ${{ github.workspace }}/theos
-
-      
-      - name: Setup Latest YouTube Headers
-        run: |
-          # Use the absolute path to where Theos usually installs on GitHub Actions
-          THEOS_PATH=~/theos 
-          rm -rf $THEOS_PATH/include/YouTubeHeader
-          git clone https://github.com/PoomSmart/YouTubeHeader.git $THEOS_PATH/include/YouTubeHeader
-
+          
       - name: Hash YT ipa url
         run: |
           URL_YT="$(jq -r '.inputs.decrypted_youtube_url' $GITHUB_EVENT_PATH)"
@@ -144,6 +136,14 @@ jobs:
         env:
           THEOS: ${{ github.workspace }}/theos
           YOUTUBE_URL: ${{ env.URL_YT }}
+
+      - name: Remove YouSpeed Tweak
+        run: |
+          # Delete the folder
+          rm -rf main/Tweaks/YouSpeed
+          # Remove it from the Makefile so Theos doesn't look for it
+          sed -i '' 's/YouSpeed//g' main/Tweaks/Makefile
+
 
       - name: Fix compiling & Build Package
         id: build_package
