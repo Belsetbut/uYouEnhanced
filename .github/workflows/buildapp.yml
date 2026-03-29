@@ -139,12 +139,11 @@ jobs:
 
       - name: Remove YouSpeed Tweak
         run: |
-          # Delete the folder
+          # Delete the physical folder
           rm -rf main/Tweaks/YouSpeed
-          # Remove it from the Makefile so Theos doesn't look for it
-          sed -i '' 's/YouSpeed//g' main/Tweaks/Makefile
-
-
+          # Find any Makefile and delete any line containing "YouSpeed"
+          find main -name "Makefile" -type f -exec sed -i '' '/YouSpeed/d' {} +
+          
       - name: Fix compiling & Build Package
         id: build_package
         run: |
